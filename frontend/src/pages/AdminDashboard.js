@@ -47,7 +47,7 @@ const AdminDashboard = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('jobportal_token');
-      const res = await axios.get('http://localhost:5000/api/admin/users', {
+      const res = await axios.get('https://jobnest-final-backend.onrender.com/api/admin/users', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(res.data.users || []);
