@@ -32,7 +32,7 @@ const AdminDashboard = () => {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem('jobportal_token');
-      const res = await axios.get('http://localhost:5000/api/admin/stats', {
+      const res = await axios.get('https://jobnest-final-backend.onrender.com/api/admin/stats', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setStats(res.data);
