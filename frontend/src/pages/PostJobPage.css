@@ -1,0 +1,86 @@
+/* PostJobPage.css */
+.post-job-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.post-job-icon {
+  width: 52px; height: 52px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  border-radius: var(--radius-xl);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.375rem;
+  flex-shrink: 0;
+}
+
+.post-job-header h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--gray-900);
+}
+
+.post-job-header p {
+  font-size: 0.9375rem;
+  color: var(--gray-500);
+  margin-top: 2px;
+}
+
+.post-job-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.form-section {
+  background: var(--white);
+  border-radius: var(--radius-xl);
+  padding: 1.75rem 2rem;
+  border: 1.5px solid var(--gray-100);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.form-section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gray-900);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.form-row-4 {
+  grid-template-columns: repeat(4, 1fr) !important;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  color: var(--gray-700);
+  margin-top: var(--spacing-sm);
+}
+
+.checkbox-label input {
+  width: 16px; height: 16px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.post-job-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-md);
+  padding-top: var(--spacing-sm);
+}
+
+@media (max-width: 768px) {
+  .form-row-4 { grid-template-columns: 1fr 1fr !important; }
+  .form-section { padding: 1.25rem; }
+}
