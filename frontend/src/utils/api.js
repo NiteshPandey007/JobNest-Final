@@ -1,94 +1,108 @@
-// ============================================
-// utils/api.js - Axios API Helper Functions
-// ============================================
 import axios from 'axios';
 
-// Backend base URL for static files (images, resumes)
-export const BACKEND_URL = process.env.REACT_APP_API_URL
-  ? process.env.REACT_APP_API_URL.replace('/api', '')
-  : 'http://localhost:5000';
+const API_BASE = 'https://jobnest-final-backend.onrender.com/api';
 
-// All API calls go through these functions.
-// They automatically include the JWT token via axios defaults set in AuthContext.
+// Helper - har request mein token automatically add karo
+const getHeaders = () => ({
+  headers: {
+    Authorization: 'Bearer ' + localStorage.getItem('jobportal_token')
+  }
+});
 
 // ==================== AUTH ====================
 export const authAPI = {
-  register: (data) => axios.post('/auth/register', data),
-  registerEmployer: (data) => axios.post('/auth/register/employer', data),
-  login: (data) => axios.post('/auth/login', data),
-  getMe: () => axios.get('/auth/me'),
-  changePassword: (data) => axios.put('/auth/change-password', data),
+  register: (data) => axios.post(API_BASE + '/auth/register', data),
+  registerEmployer: (data) => axios.post(API_BASE + '/auth/register/employer', data),
+  login: (data) => axios.post(API_BASE + '/auth/login', data),
+  getMe: () => axios.get(API_BASE + '/auth/me', getHeaders()),
+  changePassword: (data) => axios.put(API_BASE + '/auth/change-password', data, getHeaders()),
 };
 
 // ==================== JOBS ====================
 export const jobsAPI = {
-  getAll: (params) => axios.get('/jobs', { params }),
-  getById: (id) => axios.get(`/jobs/${id}`),
-  create: (data) => axios.post('/jobs', data),
-  update: (id, data) => axios.put(`/jobs/${id}`, data),
-  delete: (id) => axios.delete(`/jobs/${id}`),
-  getMyJobs: () => axios.get('/jobs/my-jobs'),
+  getAll: (params) => axios.get(API_BASE + '/jobs', { params }),
+  getById: (id) => axios.get(API_BASE + '/jobs/' + id),
+  create: (data) => axios.post(API_BASE + '/jobs', data, getHeaders()),
+  update: (id, data) => axios.put(API_BASE + '/jobs/' + id, data, getHeaders()),
+  delete: (id) => axios.delete(API_BASE + '/jobs/' + id, getHeaders()),
+  getMyJobs: () => axios.get(API_BASE + '/jobs/my-jobs', getHeaders()),
 };
 
 // ==================== APPLICATIONS ====================
 export const applicationsAPI = {
-  apply: (jobId, formData) => axios.post(`/applications/apply/${jobId}`, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-  }),
-  getMyApplications: () => axios.get('/applications/my-applications'),
-  getJobApplicants: (jobId) => axios.get(`/applications/job/${jobId}`),
-  updateStatus: (id, data) => axios.put(`/applications/${id}/status`, data),
-  withdraw: (id) => axios.delete(`/applications/${id}`),
+  apply: (jobId, formData) => axios.post(
+    API_BASE + '/applications/apply/' + jobId,
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: 'Bearer ' + localStorage.getItem('jobportal_token')
+      }
+    }
+  ),
+  getMyApplications: () => axios.get(API_BASE + '/applications/my-applications', getHeaders()),
+  getJobApplicants: (jobId) => axios.get(API_BASE + '/applications/job/' + jobId, getHeaders()),
+  updateStatus: (id, data) => axios.put(API_BASE + '/applications/' + id + '/status', data, getHeaders()),
+  withdraw: (id) => axios.delete(API_BASE + '/applications/' + id, getHeaders()),
 };
 
 // ==================== USERS ====================
 export const usersAPI = {
-  getProfile: () => axios.get('/users/profile'),
-  updateProfile: (data) => axios.put('/users/profile', data),
-  uploadResume: (formData) => axios.put('/users/resume', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-  }),
-  toggleSaveJob: (jobId) => axios.post(`/users/save-job/${jobId}`),
-  getSavedJobs: () => axios.get('/users/saved-jobs'),
+  getProfile: () => axios.get(API_BASE + '/users/profile', getHeaders()),
+  updateProfile: (data) => axios.put(API_BASE + '/users/profile', data, getHeaders()),
+  uploadResume: (formData) => axios.put(
+    API_BASE + '/users/resume',
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: 'Bearer ' + localStorage.getItem('jobportal_token')
+      }
+    }
+  ),
+  toggleSaveJob: (jobId) => axios.post(API_BASE + '/users/save-job/' + jobId, {}, getHeaders()),
+  getSavedJobs: () => axios.get(API_BASE + '/users/saved-jobs', getHeaders()),
 };
 
 // ==================== COMPANIES ====================
 export const companiesAPI = {
-  getAll: () => axios.get('/companies'),
-  getById: (id) => axios.get(`/companies/${id}`),
-  getMyCompany: () => axios.get('/companies/my-company'),
-  update: (data) => axios.put('/companies/my-company', data),
+  getAll: () => axios.get(API_BASE + '/companies'),
+  getById: (id) => axios.get(API_BASE + '/companies/' + id),
+  getMyCompany: () => axios.get(API_BASE + '/companies/my-company', getHeaders()),
+  update: (data) => axios.put(API_BASE + '/companies/my-company', data, getHeaders()),
 };
 
 // ==================== ADMIN ====================
 export const adminAPI = {
-  getStats: () => axios.get('/admin/stats'),
-  getAllUsers: (params) => axios.get('/admin/users', { params }),
-  getAllJobs: (params) => axios.get('/admin/jobs', { params }),
-  getAllApplications: (params) => axios.get('/admin/applications', { params }),
-  toggleUserStatus: (id) => axios.put(`/admin/users/${id}/toggle-status`),
-  deleteJob: (id) => axios.delete(`/admin/jobs/${id}`),
-  deleteUser: (id) => axios.delete(`/admin/users/${id}`),
+  getStats: () => axios.get(API_BASE + '/admin/stats', getHeaders()),
+  getAllUsers: (params) => axios.get(API_BASE + '/admin/users', { ...getHeaders(), params }),
+  getAllJobs: (params) => axios.get(API_BASE + '/admin/jobs', { ...getHeaders(), params }),
+  getAllApplications: (params) => axios.get(API_BASE + '/admin/applications', { ...getHeaders(), params }),
+  toggleUserStatus: (id) => axios.put(API_BASE + '/admin/users/' + id + '/toggle-status', {}, getHeaders()),
+  deleteJob: (id) => axios.delete(API_BASE + '/admin/jobs/' + id, getHeaders()),
+  deleteUser: (id) => axios.delete(API_BASE + '/admin/users/' + id, getHeaders()),
 };
 
 // ==================== HELPERS ====================
+export const BACKEND_URL = 'https://jobnest-final-backend.onrender.com';
 
-// Format salary for display
 export const formatSalary = (salary) => {
   if (!salary || (!salary.min && !salary.max)) return 'Not specified';
   const { min, max, currency = 'USD', period = 'yearly' } = salary;
-  const fmt = (n) => n >= 1000 ? `${(n/1000).toFixed(0)}k` : n;
-  const range = min && max ? `${fmt(min)} - ${fmt(max)}` : min ? `From ${fmt(min)}` : `Up to ${fmt(max)}`;
-  return `${currency} ${range} / ${period}`;
+  const fmt = (n) => n >= 1000 ? (n/1000).toFixed(0) + 'k' : n;
+  const range = min && max
+    ? fmt(min) + ' - ' + fmt(max)
+    : min ? 'From ' + fmt(min) : 'Up to ' + fmt(max);
+  return currency + ' ' + range + ' / ' + period;
 };
 
-// Format date
 export const formatDate = (dateStr) => {
   if (!dateStr) return '';
-  return new Date(dateStr).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  return new Date(dateStr).toLocaleDateString('en-US', {
+    year: 'numeric', month: 'short', day: 'numeric'
+  });
 };
 
-// Time ago
 export const timeAgo = (dateStr) => {
   const seconds = Math.floor((new Date() - new Date(dateStr)) / 1000);
   const intervals = [
@@ -101,12 +115,11 @@ export const timeAgo = (dateStr) => {
   ];
   for (const { label, secs } of intervals) {
     const count = Math.floor(seconds / secs);
-    if (count >= 1) return `${count} ${label}${count > 1 ? 's' : ''} ago`;
+    if (count >= 1) return count + ' ' + label + (count > 1 ? 's' : '') + ' ago';
   }
   return 'Just now';
 };
 
-// Status badge color mapping
 export const getStatusColor = (status) => {
   const map = {
     pending: 'badge-warning',
@@ -123,7 +136,6 @@ export const getStatusColor = (status) => {
   return map[status] || 'badge-gray';
 };
 
-// Job categories list (used across forms and filters)
 export const JOB_CATEGORIES = [
   'Technology', 'Healthcare', 'Finance', 'Education', 'Marketing',
   'Sales', 'Design', 'Engineering', 'HR', 'Operations', 'Legal',
