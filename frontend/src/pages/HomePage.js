@@ -3,13 +3,17 @@
 // ============================================
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {
   FiSearch, FiMapPin, FiBriefcase, FiUsers,
   FiTrendingUp, FiArrowRight, FiCheck
 } from 'react-icons/fi';
-import { jobsAPI, JOB_CATEGORIES } from '../utils/api';
+import { JOB_CATEGORIES } from '../utils/api';
 import JobCard from '../components/jobs/JobCard';
 import './HomePage.css';
+
+// Backend URL
+const BASE = 'https://jobnest-final-backend.onrender.com/api';
 
 const STATS = [
   { icon: <FiBriefcase />, value: '10,000+', label: 'Active Jobs' },
@@ -20,10 +24,10 @@ const STATS = [
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [keyword, setKeyword]   = useState('');
-  const [location, setLocation] = useState('');
+  const [keyword, setKeyword]         = useState('');
+  const [location, setLocation]       = useState('');
   const [featuredJobs, setFeaturedJobs] = useState([]);
-  const [loadingJobs, setLoadingJobs]   = useState(true);
+  const [loadingJobs, setLoadingJobs] = useState(true);
 
   useEffect(() => {
     fetchFeaturedJobs();
@@ -31,7 +35,9 @@ const HomePage = () => {
 
   const fetchFeaturedJobs = async () => {
     try {
-      const res = await jobsAPI.getAll({ limit: 6, sort: 'newest' });
+      const res = await axios.get(`${BASE}/jobs`, {
+        params: { limit: 6, sort: 'newest' }
+      });
       setFeaturedJobs(res.data.jobs || []);
     } catch (err) {
       console.error('Failed to load featured jobs', err);
@@ -209,7 +215,6 @@ const HomePage = () => {
       <section className="cta-section">
         <div className="container">
           <div className="cta-grid">
-            {/* Job Seeker CTA */}
             <div className="cta-card cta-seeker">
               <h3>Looking for a Job?</h3>
               <p>Join thousands of job seekers who found their dream career through JobNest.</p>
@@ -220,7 +225,6 @@ const HomePage = () => {
               </ul>
               <Link to="/register" className="btn btn-primary btn-lg">Get Started Free</Link>
             </div>
-            {/* Employer CTA */}
             <div className="cta-card cta-employer">
               <h3>Hiring Talent?</h3>
               <p>Post your job and reach thousands of qualified candidates today.</p>
@@ -238,7 +242,6 @@ const HomePage = () => {
   );
 };
 
-// Map category names to emoji icons
 const getCategoryIcon = (cat) => {
   const icons = {
     Technology: '💻', Healthcare: '🏥', Finance: '💰', Education: '📚',
