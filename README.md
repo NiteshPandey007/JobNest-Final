@@ -4,9 +4,9 @@
 
 | Role | Email | Password |
 |------|-------|----------|
-| 👑 Admin | admin@jobnest.com | password123 |
-| 🏢 Employer | employer@demo.com | password123 |
-| 👤 Job Seeker | seeker@demo.com | password123 |
+| 👑 Admin | admin@jobnest.com | xxxxxxxxxx |
+| 🏢 Employer | employer@demo.com | xxxxxxxxxx |
+| 👤 Job Seeker | seeker@demo.com | xxxxxxxxxxx |
 
 > Backend deploy hote hi sab automatically ban jaata hai!
 
@@ -46,7 +46,6 @@ job-portal/
    Example: https://job-portal-backend-xxxx.onrender.com
    ```
 
-> ✅ Deploy hote hi Admin + Users + 5 Jobs automatic ban jaayenge!
 
 ---
 
@@ -76,7 +75,7 @@ job-portal/
 https://tera-vercel-url.vercel.app/login
 
 Email:    admin@jobnest.com
-Password: password123
+Password: xxxxxxxxxx
 ```
 
 ---
