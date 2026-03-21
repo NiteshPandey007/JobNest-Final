@@ -6,6 +6,13 @@ const AuthContext = createContext(null);
 const API_BASE = 'https://jobnest-final-backend.onrender.com/api';
 
 axios.defaults.baseURL = API_BASE;
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem('jobportal_token');
+  if (token) {
+    config.headers.Authorization = 'Bearer ' + token;
+  }
+  return config;
+});
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
